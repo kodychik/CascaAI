@@ -119,7 +119,7 @@ def pdf_to_images(pdf_path, dpi=300):
     return images
 
 
-def inference():
+def inference(pdfers):
 
     # path = "OpenGVLab/InternVL2_5-8B"
     # device_map = split_model('InternVL2_5-8B')
@@ -145,7 +145,8 @@ def inference():
     tokenizer = AutoTokenizer.from_pretrained(
         path, trust_remote_code=True, use_fast=False)
 
-    images = pdf_to_images("bank_statements/LloydsUK.pdf")
+    # images = pdf_to_images("bank_statements/LloydsUK.pdf")
+    images = pdf_to_images(pdfers)
     # set the max number of tiles in `max_num`
     print("@@@@@@@@")
     pixel_values = load_image(images[0], max_num=12).to(torch.bfloat16).to(device)
@@ -158,6 +159,8 @@ def inference():
     response = model.chat(tokenizer, pixel_values, question, generation_config)
     print("*****")
     print(f'User: {question}\nAssistant: {response}')
+
+    return response
 
 
 if __name__=="__main__":
